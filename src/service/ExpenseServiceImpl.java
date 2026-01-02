@@ -4,6 +4,7 @@ import model.Category;
 import model.Expense;
 import repository.ExpenseRepository;
 import util.ValidationUtil;
+import exception.BudgetException; // Yeni eklendi
 
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,14 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public void addExpense(String description, double amount, Category category) {
-        ValidationUtil.validateExpenseInput(description, amount);
-        Expense expense = new Expense(description, amount, category);
-        repository.save(expense);
+        try {
+            ValidationUtil.validateExpenseInput(description, amount);
+            Expense expense = new Expense(description, amount, category);
+            repository.save(expense);
+        } catch (IllegalArgumentException e) {
+            // Hata yakalanıp kendi oluşturduğumuz hataya dönüştürülüyor
+            throw new BudgetException("Failed to add expense: " + e.getMessage());
+        }
     }
 
     @Override
