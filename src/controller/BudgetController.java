@@ -35,12 +35,21 @@ public class BudgetController {
         }
     }
 
-    // Empty methods to be filled in next steps
-    private void handleAddExpense() {}
-    private void handleViewAll() {}
-    private void handleTotalSpending() {}
-    private void handleCategorySpending() {}
-    private void handleRemoveExpense() {}
+    private void handleViewAll() {
+        view.displayMessage("--- All Expenses ---");
+        service.getAllExpenses().forEach(e -> System.out.println(e));
+    }
+
+    private void handleTotalSpending() {
+        double total = service.getTotalSpending();
+        view.displayMessage("Total Spending: " + total);
+    }
+
+    private void handleCategorySpending() {
+        view.displayMessage("--- Spending by Category ---");
+        service.getSpendingByCategory().forEach((cat, amt) ->
+                System.out.println(cat + ": " + amt));
+    }
 
 }
 private void handleAddExpense() {
