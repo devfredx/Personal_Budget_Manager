@@ -41,4 +41,20 @@ public class BudgetController {
     private void handleTotalSpending() {}
     private void handleCategorySpending() {}
     private void handleRemoveExpense() {}
-}   
+
+}
+private void handleAddExpense() {
+    try {
+        String desc = view.getInput("Description");
+        double amount = Double.parseDouble(view.getInput("Amount"));
+        String catStr = view.getInput("Category (FOOD, TRANSPORTATION, etc.)");
+        Category category = Category.fromString(catStr);
+
+        service.addExpense(desc, amount, category);
+        view.displayMessage("Expense added successfully!");
+    } catch (NumberFormatException e) {
+        view.displayError("Invalid amount format!");
+    } catch (BudgetException e) {
+        view.displayError(e.getMessage());
+    }
+}
