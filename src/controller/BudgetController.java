@@ -1,11 +1,12 @@
 package controller;
 
+import exception.BudgetException;
+import model.Category;
+import model.Expense;
 import service.ExpenseService;
 import view.ConsoleView;
-import model.Category;
-import exception.BudgetException;
+
 import java.util.List;
-import model.Expense;
 
 public class BudgetController {
     private final ExpenseService service;

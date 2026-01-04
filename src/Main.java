@@ -7,7 +7,7 @@ import view.ConsoleView;
 import view.ConsoleViewImpl;
 
 public class Main {
-    public static void main(String[] args) {
+    static void main(String[] args) {
         System.out.println("Initializing Personal Budget Manager...");
 
         // 1. Initialize Repository (Data Layer)
