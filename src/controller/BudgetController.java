@@ -4,6 +4,8 @@ import service.ExpenseService;
 import view.ConsoleView;
 import model.Category;
 import exception.BudgetException;
+import java.util.List;
+import model.Expense;
 
 public class BudgetController {
     private final ExpenseService service;
@@ -35,9 +37,32 @@ public class BudgetController {
         }
     }
 
+    private void handleAddExpense() {
+        try {
+            String desc = view.getInput("Description");
+            String amountStr = view.getInput("Amount");
+            double amount = Double.parseDouble(amountStr);
+
+            String catStr = view.getInput("Category (FOOD, TRANSPORTATION, UTILITIES, ENTERTAINMENT, CLOTHING, HEALTH, OTHER)");
+            Category category = Category.fromString(catStr);
+
+            service.addExpense(desc, amount, category);
+            view.displayMessage("Expense added successfully!");
+        } catch (NumberFormatException e) {
+            view.displayError("Invalid amount format! Please enter a number.");
+        } catch (BudgetException e) {
+            view.displayError(e.getMessage());
+        }
+    }
+
     private void handleViewAll() {
+        List<Expense> expenses = service.getAllExpenses();
+        if (expenses.isEmpty()) {
+            view.displayMessage("No expenses recorded yet.");
+            return;
+        }
         view.displayMessage("--- All Expenses ---");
-        service.getAllExpenses().forEach(e -> System.out.println(e));
+        expenses.forEach(e -> System.out.println(e));
     }
 
     private void handleTotalSpending() {
@@ -51,19 +76,13 @@ public class BudgetController {
                 System.out.println(cat + ": " + amt));
     }
 
-}
-private void handleAddExpense() {
-    try {
-        String desc = view.getInput("Description");
-        double amount = Double.parseDouble(view.getInput("Amount"));
-        String catStr = view.getInput("Category (FOOD, TRANSPORTATION, etc.)");
-        Category category = Category.fromString(catStr);
-
-        service.addExpense(desc, amount, category);
-        view.displayMessage("Expense added successfully!");
-    } catch (NumberFormatException e) {
-        view.displayError("Invalid amount format!");
-    } catch (BudgetException e) {
-        view.displayError(e.getMessage());
+    private void handleRemoveExpense() {
+        String id = view.getInput("Enter Expense ID to remove");
+        boolean removed = service.removeExpense(id);
+        if (removed) {
+            view.displayMessage("Expense removed successfully!");
+        } else {
+            view.displayError("Expense not found with given ID!");
+        }
     }
 }
