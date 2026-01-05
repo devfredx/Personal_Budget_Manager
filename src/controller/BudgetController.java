@@ -57,13 +57,22 @@ public class BudgetController {
     }
 
     private void handleViewAll() {
-        List<Expense> expenses = service.getAllExpenses();
+        var expenses = service.getAllExpenses();
         if (expenses.isEmpty()) {
-            view.displayMessage("No expenses recorded yet.");
+            view.displayError("No expenses found!");
             return;
         }
-        view.displayMessage("--- All Expenses ---");
-        expenses.forEach(e -> System.out.println(e));
+
+        System.out.println("\n" + util.ColorUtil.WHITE_BOLD + String.format("%-15s | %-10s | %-20s", "CATEGORY", "AMOUNT", "DESCRIPTION") + util.ColorUtil.RESET);
+        util.ColorUtil.printSeparator();
+
+        expenses.forEach(e -> {
+            System.out.printf("%-15s | %-10.2f | %-20s%n",
+                    e.getCategory(),
+                    e.getAmount(),
+                    e.getDescription());
+        });
+        util.ColorUtil.printSeparator();
     }
 
     private void handleTotalSpending() {
