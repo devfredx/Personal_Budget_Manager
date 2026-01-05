@@ -77,13 +77,13 @@ public class BudgetController {
 
     private void handleTotalSpending() {
         double total = service.getTotalSpending();
-        view.displayMessage("Total Spending: " + total);
+        System.out.println("\n" + util.ColorUtil.CYAN + "💰 TOTAL ACCUMULATED SPENDING: " + util.ColorUtil.YELLOW + "$" + String.format("%.2f", total) + util.ColorUtil.RESET);
     }
 
     private void handleCategorySpending() {
-        view.displayMessage("--- Spending by Category ---");
+        System.out.println("\n" + util.ColorUtil.PURPLE + "--- SPENDING BY CATEGORY ---" + util.ColorUtil.RESET);
         service.getSpendingByCategory().forEach((cat, amt) ->
-                System.out.println(cat + ": " + amt));
+                System.out.printf(util.ColorUtil.WHITE_BOLD + "%-15s: " + util.ColorUtil.RESET + "$%.2f%n", cat, amt));
     }
 
     private void handleRemoveExpense() {
